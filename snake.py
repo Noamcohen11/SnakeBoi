@@ -1,18 +1,9 @@
+##############################################################################
+#                                   Imports                                  #
+##############################################################################
+
 from typing import Optional
-
-##############################################################################
-#                                   Constants                                #
-##############################################################################
-
-HORIZONTAL_DIRECTIONS = {"Left", "Right"}
-VERTICAL_DIRECTIONS = {"Up", "Down"}
-MOVEMENT_DIRECTIONS = HORIZONTAL_DIRECTIONS | VERTICAL_DIRECTIONS
-MOVMENT_VECTOR = {
-    "Up": (0, 1),
-    "Down": (0, -1),
-    "Left": (-1, 0),
-    "Right": (1, 0),
-}
+from movemenet_consts import *
 
 ##############################################################################
 #                                   Functions                                #
@@ -25,14 +16,13 @@ class Snake:
     """
 
     def __init__(
-        self, size: int, color: str, direction: str, head_pos: tuple(int, int)
+        self, size: int, direction: str, head_pos: tuple[int, int]
     ) -> None:
         """Initialize the snake object
         :param size: The size of the snake.
         :param color: The color of the snake.
         :param direction: The direction of the snake.
         :param head_pos: The position of the head of the snake."""
-        self.color = color
         self.size = size
         # Check if direction is valid
         if direction not in MOVEMENT_DIRECTIONS:
@@ -44,14 +34,23 @@ class Snake:
 
         # Add entire snake to positions.
         self.positions = []
-        for block in size:
-            self.positions.append(head_pos - MOVMENT_VECTOR[direction] * block)
+        for block in range(size):
+            self.positions.append(
+                tuple(
+                    head_pos[i] - MOVMENT_VECTOR[direction][i] * block
+                    for i in range(BOARD_DIM)
+                )
+            )
 
     def move(self) -> None:
         """Move the snake one step in the current direction."""
         self.positions.pop()
         self.positions.insert(
-            0, self.positions[0] + MOVMENT_VECTOR[self.direction]
+            0,
+            tuple(
+                self.positions[0][i] + MOVMENT_VECTOR[self.direction][i]
+                for i in range(BOARD_DIM)
+            ),
         )
 
     def change_direction(self, direction: str) -> bool:
@@ -68,3 +67,13 @@ class Snake:
             self.direction = direction
             return True
         return False
+
+    def get_head_pos(self) -> tuple[int, int]:
+        """Get the position of the head of the snake.
+        :return: The position of the head of the snake."""
+        return self.positions[0]
+
+    def get_snake_pos(self) -> list[tuple[int, int]]:
+        """Get the position of the snake.
+        :return: The position of the snake."""
+        return self.positions
