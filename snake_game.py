@@ -5,7 +5,7 @@
 from typing import Optional
 from game_display import GameDisplay
 from snake import Snake
-from movemenet_consts import *
+from directions_consts import *
 from apple import ApplesHandler
 
 ##############################################################################

@@ -3,7 +3,7 @@
 ##############################################################################
 
 from typing import Optional
-from movemenet_consts import *
+from directions_consts import *
 
 ##############################################################################
 #                                   Functions                                #
