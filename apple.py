@@ -50,8 +50,10 @@ class ApplesHandler:
         """
         try:
             self.__apples.pop((x, y))
+            print("DEBUG: Apple removed")
             return True
         except KeyError:
+            print("DEBUG: Apple not found")
             return False
 
     def get_apples(self) -> list:

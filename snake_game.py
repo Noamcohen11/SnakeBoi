@@ -6,6 +6,7 @@ from typing import Optional
 from game_display import GameDisplay
 from snake import Snake
 from movemenet_consts import *
+from apple import ApplesHandler
 
 ##############################################################################
 #                                   Functions                                #
@@ -23,6 +24,7 @@ class SnakeGame:
         self.width = width
         self.__snake = snake
         self.__key_clicked = None
+        self.__apples_handler = ApplesHandler(5)
 
     def read_key(self, key_clicked: Optional[str]) -> None:
         """Read the key that was clicked and change the direction of the snake.
@@ -33,6 +35,9 @@ class SnakeGame:
     def update_objects(self) -> None:
         """Update the snake in the game."""
         self.__snake.move()
+        (x, y) = self.__snake.get_head_pos()
+        self.__apples_handler.remove_apple(x, y)
+        self.__apples_handler.add_apple()
 
     def draw_board(self, gd: GameDisplay) -> None:
         """Draw the snake on the game board.
@@ -41,6 +46,10 @@ class SnakeGame:
             x, y = pos
             if x > 0 and x < self.width and y > 0 and y < self.height:
                 gd.draw_cell(x, y, SNAKE_COLOR)
+        
+        for apple in self.__apples_handler.get_apples():
+            x, y = apple.get_x(), apple.get_y()
+            gd.draw_cell(x, y, "red")
 
         if len(self.__apples_handler.get_apples()) > 0:
             for apple in self.__apples_handler.get_apples():
