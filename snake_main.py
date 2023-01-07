@@ -40,12 +40,7 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
         (args.width // 2, args.height // 2),
         SNAKE_COLOR,
     )
-<<<<<<< HEAD
     game = SnakeGame(args.width, args.height, snake, max_apples)
-=======
-
-    game = SnakeGame(args.width, args.height, snake)
->>>>>>> 58f0897 (added wall class)
     gd.show_score(0)
     # DRAW BOARD
     game.draw_board(gd)
