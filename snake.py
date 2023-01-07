@@ -83,6 +83,16 @@ class Snake:
         """Get the position of the snake.
         :return: The position of the snake."""
         return self.positions
+    
+    def grow(self) -> None:
+        """Grow the snake by one block."""
+        self.positions.insert(
+            0,
+            tuple(
+                self.positions[0][i] + MOVMENT_VECTOR[self.direction][i]
+                for i in range(BOARD_DIM)
+            ),
+        )
 
     def get_color(self) -> str:
         """Get the color of the snake.

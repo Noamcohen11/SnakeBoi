@@ -36,7 +36,8 @@ class SnakeGame:
         """Update the snake in the game."""
         self.__snake.move()
         (x, y) = self.__snake.get_head_pos()
-        self.__apples_handler.remove_apple(x, y)
+        if self.__apples_handler.remove_apple(x, y):
+            self.__snake.grow()
         self.__apples_handler.add_apple()
 
     def draw_board(self, gd: GameDisplay) -> None:
@@ -45,15 +46,11 @@ class SnakeGame:
         for pos in self.__snake.get_snake_pos():
             x, y = pos
             if x > 0 and x < self.width and y > 0 and y < self.height:
-                gd.draw_cell(x, y, SNAKE_COLOR)
+                gd.draw_cell(x, y, self.__snake.get_color())
         
         for apple in self.__apples_handler.get_apples():
             x, y = apple.get_x(), apple.get_y()
-            gd.draw_cell(x, y, "red")
-
-        if len(self.__apples_handler.get_apples()) > 0:
-            for apple in self.__apples_handler.get_apples():
-                gd.draw_cell(apple.get_x(), apple.get_y(), "green")
+            gd.draw_cell(x, y, "green")
 
     def end_round(self) -> None:
         pass
