@@ -14,7 +14,7 @@ from apple import ApplesHandler
 
 
 class SnakeGame:
-    def __init__(self, width: int, height: int, snake) -> None:
+    def __init__(self, width: int, height: int, snake: Snake, max_apples: int) -> None:
         """
         Initialize the snake game object.
         :param width: The width of the game board.
@@ -24,7 +24,7 @@ class SnakeGame:
         self.width = width
         self.__snake = snake
         self.__key_clicked = None
-        self.__apples_handler = ApplesHandler(5)
+        self.__apples_handler = ApplesHandler(max_apples)
 
     def read_key(self, key_clicked: Optional[str]) -> None:
         """Read the key that was clicked and change the direction of the snake.
@@ -35,10 +35,16 @@ class SnakeGame:
     def update_objects(self) -> None:
         """Update the snake in the game."""
         self.__snake.move()
-        (x, y) = self.__snake.get_head_pos()
+        # Check if snake ate an apple
+        (x, y) = self.__snake.get_head_pos()        
         if self.__apples_handler.remove_apple(x, y):
-            self.__snake.grow()
-        self.__apples_handler.add_apple()
+            self.__snake.grow()            
+        
+        # Check if new apple spawned in snake. If so, remove it.
+        snake_coords = self.__snake.get_snake_pos()
+        new_apple_pos = self.__apples_handler.add_apple()
+        if new_apple_pos in snake_coords:
+            self.__apples_handler.remove_apple(new_apple_pos[0], new_apple_pos[1])
 
     def draw_board(self, gd: GameDisplay) -> None:
         """Draw the snake on the game board.
@@ -74,6 +80,7 @@ class SnakeGame:
         set_snake_pos = set(self.__snake.get_snake_pos())
         if len(set_snake_pos) != len(self.__snake.get_snake_pos()):
             return True
+        
 
         """Check if the game is over.
         meaning the snake is out of bounds or eating itself.

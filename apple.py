@@ -18,7 +18,7 @@ class Apple:
 class ApplesHandler:
     """A class that handles the apples in the game"""
 
-    def __init__(self, number_of_apples = 0):
+    def __init__(self, number_of_apples: int = 0):
         self.__apples = {}
         self.__num_apples = number_of_apples
 
@@ -50,10 +50,10 @@ class ApplesHandler:
         """
         try:
             self.__apples.pop((x, y))
-            print("DEBUG: Apple removed")
+            # print("DEBUG: Apple removed")
             return True
         except KeyError:
-            print("DEBUG: Apple not found")
+            # print("DEBUG: Apple not found")
             return False
 
     def get_apples(self) -> list:

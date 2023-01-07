@@ -86,13 +86,7 @@ class Snake:
     
     def grow(self) -> None:
         """Grow the snake by one block."""
-        self.positions.insert(
-            0,
-            tuple(
-                self.positions[0][i] + MOVMENT_VECTOR[self.direction][i]
-                for i in range(BOARD_DIM)
-            ),
-        )
+        self.positions.append((0, 0))
 
     def get_color(self) -> str:
         """Get the color of the snake.
