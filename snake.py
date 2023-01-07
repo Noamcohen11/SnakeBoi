@@ -16,7 +16,7 @@ class Snake:
     """
 
     def __init__(
-        self, size: int, direction: str, head_pos: tuple[int, int]
+        self, size: int, direction: str, head_pos: tuple[int, int], color: str
     ) -> None:
         """Initialize the snake object
         :param size: The size of the snake.
@@ -24,6 +24,7 @@ class Snake:
         :param direction: The direction of the snake.
         :param head_pos: The position of the head of the snake."""
         self.size = size
+        self.color = color
         # Check if direction is valid
         if direction not in MOVEMENT_DIRECTIONS:
             raise ValueError(
@@ -44,6 +45,9 @@ class Snake:
 
     def move(self) -> None:
         """Move the snake one step in the current direction."""
+        if self.positions == []:
+            return
+
         self.positions.pop()
         self.positions.insert(
             0,
@@ -71,9 +75,16 @@ class Snake:
     def get_head_pos(self) -> tuple[int, int]:
         """Get the position of the head of the snake.
         :return: The position of the head of the snake."""
-        return self.positions[0]
+        if self.positions != []:
+            return self.positions[0]
+        return None
 
     def get_snake_pos(self) -> list[tuple[int, int]]:
         """Get the position of the snake.
         :return: The position of the snake."""
         return self.positions
+
+    def get_color(self) -> str:
+        """Get the color of the snake.
+        :return: The color of the snake."""
+        return self.color

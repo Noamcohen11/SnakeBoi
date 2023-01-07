@@ -4,16 +4,7 @@
 
 from typing import Optional
 from game_display import GameDisplay
-from snake import Snake
 from movemenet_consts import *
-
-##############################################################################
-#                                   Constants                                #
-##############################################################################
-
-SNAKE_COLOR = "black"
-SNAKE_INIT_SIZE = 3
-SNAKE_INIT_DIRECTION = "Up"
 
 ##############################################################################
 #                                   Functions                                #
@@ -21,7 +12,7 @@ SNAKE_INIT_DIRECTION = "Up"
 
 
 class SnakeGame:
-    def __init__(self, width: int, height: int) -> None:
+    def __init__(self, width: int, height: int, snake) -> None:
         """
         Initialize the snake game object.
         :param width: The width of the game board.
@@ -29,11 +20,7 @@ class SnakeGame:
         """
         self.height = height
         self.width = width
-        self.__snake = Snake(
-            SNAKE_INIT_SIZE,
-            SNAKE_INIT_DIRECTION,
-            (self.width // 2, self.height // 2),
-        )
+        self.__snake = snake
         self.__key_clicked = None
 
     def read_key(self, key_clicked: Optional[str]) -> None:
@@ -51,8 +38,8 @@ class SnakeGame:
         :param gd: The game display object."""
         for pos in self.__snake.get_snake_pos():
             x, y = pos
-            if x > 0 and x < self.width and y > 0 and y < self.height:
-                gd.draw_cell(x, y, SNAKE_COLOR)
+            if x >= 0 and x < self.width and y >= 0 and y < self.height:
+                gd.draw_cell(x, y, self.__snake.get_color())
 
     def end_round(self) -> None:
         pass
@@ -63,14 +50,18 @@ class SnakeGame:
         :return: True if the game is over, False otherwise."""
 
         # Check if snake is out of bounds
-        for pos in self.__snake.get_snake_pos():
-            if (
-                pos[0] < 0
-                or pos[0] >= self.width
-                or pos[1] < 0
-                or pos[1] >= self.height
-            ):
-                return True
+        pos = self.__snake.get_head_pos()
+        # If the snake is in length 0, it is not out of bounds.
+        if pos is None:
+            return False
+
+        if (
+            pos[0] < 0
+            or pos[0] >= self.width
+            or pos[1] < 0
+            or pos[1] >= self.height
+        ):
+            return True
 
         # Check if snake is eating itself
         set_snake_pos = set(self.__snake.get_snake_pos())
