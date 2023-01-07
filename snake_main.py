@@ -7,14 +7,18 @@ import game_utils
 from snake_game import SnakeGame
 from game_display import GameDisplay
 from snake import Snake
+from wall import Wall
 
 ##############################################################################
 #                                   Constants                                #
 ##############################################################################
 
 SNAKE_COLOR = "black"
-SNAKE_INIT_SIZE = 2
+SNAKE_INIT_SIZE = 3
 SNAKE_INIT_DIRECTION = "Up"
+
+WALL_COLOR = "blue"
+WALL_SIZE = 3
 
 ##############################################################################
 #                                   Functions                                #
@@ -28,12 +32,14 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
     # If we are in debug, use a dummy snake.
     if args.debug:
         snake_len = 0
+    # Create snake.
     snake = Snake(
         snake_len,
         SNAKE_INIT_DIRECTION,
         (args.width // 2, args.height // 2),
         SNAKE_COLOR,
     )
+
     game = SnakeGame(args.width, args.height, snake)
     gd.show_score(0)
     # DRAW BOARD

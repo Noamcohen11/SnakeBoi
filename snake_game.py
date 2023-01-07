@@ -4,7 +4,6 @@
 
 from typing import Optional
 from game_display import GameDisplay
-from movemenet_consts import *
 
 ##############################################################################
 #                                   Functions                                #
