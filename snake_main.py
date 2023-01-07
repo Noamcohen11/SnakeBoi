@@ -1,18 +1,46 @@
+##############################################################################
+#                                   Imports                                  #
+##############################################################################
+
 import argparse
 import game_utils
 from snake_game import SnakeGame
 from game_display import GameDisplay
+from snake import Snake
+
+##############################################################################
+#                                   Constants                                #
+##############################################################################
+
+SNAKE_COLOR = "black"
+SNAKE_INIT_SIZE = 2
+SNAKE_INIT_DIRECTION = "Up"
+
+##############################################################################
+#                                   Functions                                #
+##############################################################################
 
 
 def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
 
     # INIT OBJECTS
-    game = SnakeGame(args.width, args.height)
+    snake_len = SNAKE_INIT_SIZE
+    # If we are in debug, use a dummy snake.
+    if args.debug:
+        snake_len = 0
+    snake = Snake(
+        snake_len,
+        SNAKE_INIT_DIRECTION,
+        (args.width // 2, args.height // 2),
+        SNAKE_COLOR,
+    )
+    game = SnakeGame(args.width, args.height, snake)
     gd.show_score(0)
     # DRAW BOARD
     game.draw_board(gd)
     # END OF ROUND 0
-    while not game.is_over():
+    round = 0
+    while not (game.is_over() or round == args.rounds):
         # CHECK KEY CLICKS
         key_clicked = gd.get_key_clicked()
         game.read_key(key_clicked)
@@ -23,25 +51,8 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
         # WAIT FOR NEXT ROUND:
         game.end_round()
         gd.end_round()
+        round += 1
 
 
 if __name__ == "__main__":
     print("You should run:\n" "> python game_display.py")
-
-    ##############################################################################
-    #                                  head check                                #
-    # MOVMENT_VECTOR = {
-    #     "Up": (0, 1),
-    #     "Down": (0, -1),
-    #     "Left": (-1, 0),
-    #     "Right": (1, 0),
-    # }
-    # Check if head_pos is valid
-    # for i in head_pos:
-    #     if i + MOVMENT_VECTOR[direction] < 0:
-    #         raise ValueError(
-    #             "Invalid head_pos {} for snake.".format(head_pos)
-    #         )
-    # else:
-    #     self.head_pos = head_pos
-    ##############################################################################
