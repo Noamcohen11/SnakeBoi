@@ -15,7 +15,6 @@ from snake import Snake
 SNAKE_COLOR = "black"
 SNAKE_INIT_SIZE = 2
 SNAKE_INIT_DIRECTION = "Up"
-MAX_APPLES = 5
 
 ##############################################################################
 #                                   Functions                                #
@@ -25,11 +24,8 @@ MAX_APPLES = 5
 def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
 
     # INIT OBJECTS
-    snake_len = SNAKE_INIT_SIZE
-    max_apples = MAX_APPLES
-    if args.apples:
-        print("DEBUG: apples = {}".format(args.apples))
-        max_apples = args.apples
+    snake_len = SNAKE_INIT_SIZE    
+    max_apples = args.apples
     # If we are in debug, use a dummy snake.
     if args.debug:
         snake_len = 0
