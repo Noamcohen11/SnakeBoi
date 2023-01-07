@@ -4,12 +4,13 @@
 
 from typing import Optional
 from game_display import GameDisplay
+from apple import ApplesHandler
+from snake import Snake
 from movemenet_consts import *
 
 ##############################################################################
 #                                   Functions                                #
 ##############################################################################
-
 
 class SnakeGame:
     def __init__(self, width: int, height: int, snake) -> None:
@@ -22,6 +23,7 @@ class SnakeGame:
         self.width = width
         self.__snake = snake
         self.__key_clicked = None
+        self.__apples_handler = ApplesHandler(5)
 
     def read_key(self, key_clicked: Optional[str]) -> None:
         """Read the key that was clicked and change the direction of the snake.
@@ -29,6 +31,24 @@ class SnakeGame:
         self.__key_clicked = key_clicked
         self.__snake.change_direction(self.__key_clicked)
 
+    def update_objects(self)-> None:
+        moved = False
+        if (self.__key_clicked == 'Left') and (self.__x > 0):
+            moved = True
+            self.__x -= 1
+        elif (self.__key_clicked == 'Right') and (self.__x < 40):
+            moved = True
+            self.__x += 1
+        elif (self.__key_clicked == 'Down') and (self.__y > 0):
+            moved = True
+            self.__y -= 1
+        elif (self.__key_clicked == 'Up') and (self.__y < 40):
+            moved = True
+            self.__y += 1
+        
+        self.__apples_handler.remove_apple(self.__x, self.__y)
+        self.__apples_handler.add_apple()
+        
     def update_objects(self) -> None:
         """Update the snake in the game."""
         self.__snake.move()
@@ -40,6 +60,10 @@ class SnakeGame:
             x, y = pos
             if x >= 0 and x < self.width and y >= 0 and y < self.height:
                 gd.draw_cell(x, y, self.__snake.get_color())
+
+        if len(self.__apples_handler.get_apples()) > 0:
+            for apple in self.__apples_handler.get_apples():
+                gd.draw_cell(apple.get_x(), apple.get_y(), "green")
 
     def end_round(self) -> None:
         pass
