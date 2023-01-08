@@ -30,6 +30,7 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
     # INIT OBJECTS
     snake_len = SNAKE_INIT_SIZE    
     max_apples = args.apples
+    max_walls = args.walls
     # If we are in debug, use a dummy snake.
     if args.debug:
         snake_len = 0
@@ -40,7 +41,7 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
         (args.width // 2, args.height // 2),
         SNAKE_COLOR,
     )
-    game = SnakeGame(args.width, args.height, snake, max_apples)
+    game = SnakeGame(args.width, args.height, snake, max_apples, max_walls)
     gd.show_score(0)
     # DRAW BOARD
     game.draw_board(gd)

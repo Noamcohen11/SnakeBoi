@@ -88,6 +88,11 @@ class Snake:
         """Grow the snake by one block."""
         self.positions.append((0, 0))
 
+    def cut(self, pos: tuple[int, int]) -> None:
+        """Cut the snake at the given position.
+        :param pos: The position to cut the snake at."""
+        self.positions = self.positions[: self.positions.index(pos)]
+
     def get_color(self) -> str:
         """Get the color of the snake.
         :return: The color of the snake."""
