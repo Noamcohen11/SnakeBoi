@@ -84,6 +84,10 @@ class Snake:
         :return: The position of the snake."""
         return self.positions
     
+    def get_size(self):
+        """Get the size of the snake."""
+        return len(self.positions)
+        
     def grow(self) -> None:
         """Grow the snake by one block."""
         self.positions.append((-1, -1))

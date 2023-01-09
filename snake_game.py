@@ -25,8 +25,11 @@ class SnakeGame:
         self.width = width
         self.__snake = snake
         self.__key_clicked = None
+
         self.__apples_handler = ApplesHandler(max_apples)
         self.__walls_handler = WallsHandler(max_walls)
+
+        self.__score = 0
         self.__round = 0
 
     def read_key(self, key_clicked: Optional[str]) -> None:
@@ -41,7 +44,8 @@ class SnakeGame:
         # Check if snake ate an apple
         (x, y) = self.__snake.get_head_pos()        
         if self.__apples_handler.remove_apple(x, y):
-            self.__snake.grow()            
+            self.__score += int(self.__snake.get_size()**0.5)  # Increase score
+            self.__snake.grow()
         
         # Check if new apple spawned in snake. If so, remove it.
         snake_coords = self.__snake.get_snake_pos()
@@ -69,21 +73,28 @@ class SnakeGame:
     def draw_board(self, gd: GameDisplay) -> None:
         """Draw the snake on the game board.
         :param gd: The game display object."""
+
+        # Draw snake
         for pos in self.__snake.get_snake_pos():
             x, y = pos
             if x >= 0 and x < self.width and y >= 0 and y < self.height:
                 gd.draw_cell(x, y, self.__snake.get_color())
         
+        # Draw Apples
         for apple in self.__apples_handler.get_apples():
             x, y = apple.get_x(), apple.get_y()
             gd.draw_cell(x, y, apple.get_color())
         
+        # Draw walls
         for wall in self.__walls_handler.get_walls():
             for pos in wall.get_positions():
                 (x, y) = pos
                 if x >= 0 and x < self.width and y >= 0 and y < self.height:
                     gd.draw_cell(x, y, wall.get_color())
 
+        # Display score
+        gd.show_score(self.__score)
+        
     def end_round(self) -> None:
         pass
 
