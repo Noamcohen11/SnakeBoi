@@ -63,7 +63,10 @@ class SnakeGame:
 
         # Spawn a new wall
         
-        new_wall_coordinates = self.__walls_handler.add_wall()
+        self.__walls_handler.add_wall()
+        for wall in self.__walls_handler.get_walls():
+            for pos in wall.get_positions():
+                self.__apples_handler.remove_apple(pos[0], pos[1])
         
 
         self.__round += 1
@@ -94,7 +97,7 @@ class SnakeGame:
 
         # Display score
         gd.show_score(self.__score)
-        
+
     def end_round(self) -> None:
         pass
 
