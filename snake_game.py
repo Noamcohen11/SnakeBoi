@@ -54,12 +54,13 @@ class SnakeGame:
                 wall.move()
             (x, y) = wall.get_positions()[-1]
             if x < 0 or x >= self.width or y < 0 or y >= self.height:
-                print("DEBBUG: Removing wall")
+                # print("DEBBUG: Removing wall")
                 self.__walls_handler.remove_wall(x, y)
 
         # Spawn a new wall
         
-        self.__walls_handler.add_wall()
+        new_wall_coordinates = self.__walls_handler.add_wall()
+        
 
         self.__round += 1
 
@@ -75,13 +76,13 @@ class SnakeGame:
         
         for apple in self.__apples_handler.get_apples():
             x, y = apple.get_x(), apple.get_y()
-            gd.draw_cell(x, y, "green")
+            gd.draw_cell(x, y, apple.get_color())
         
         for wall in self.__walls_handler.get_walls():
             for pos in wall.get_positions():
                 (x, y) = pos
                 if x >= 0 and x < self.width and y >= 0 and y < self.height:
-                    gd.draw_cell(x, y, "black")
+                    gd.draw_cell(x, y, wall.get_color())
 
     def end_round(self) -> None:
         pass

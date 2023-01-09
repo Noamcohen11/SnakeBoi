@@ -14,6 +14,10 @@ class Apple:
         """Returns the y coordinate of the apple"""
         return self.__y
 
+    def get_color(self):
+        """Returns the color of the apple"""
+        return self.__color
+
 
 class ApplesHandler:
     """A class that handles the apples in the game"""

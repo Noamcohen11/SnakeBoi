@@ -92,7 +92,7 @@ class WallsHandler:
         if (x, y) in wall_positions:
             return None
         
-        self.__walls.append(Wall(self.WALL_SIZE, direction, (x, y), "black"))
+        self.__walls.append(Wall(self.WALL_SIZE, direction, (x, y), "blue"))
         return (x, y)
 
     def remove_wall(self, x: int, y: int) -> None:
