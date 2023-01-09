@@ -86,10 +86,14 @@ class Snake:
     
     def get_size(self):
         """Get the size of the snake."""
-        return len(self.positions)
-        
+
+        # Return the number of blocks in the snake without the growing blocks
+        # represented by (-1, -1)
+        return len(self.positions) - self.positions.count((-1, -1))
+
+
     def grow(self) -> None:
-        """Grow the snake by one block."""
+        """Grow the snake by three block."""
         self.positions.append((-1, -1))
         self.positions.append((-1, -1))
         self.positions.append((-1, -1))
