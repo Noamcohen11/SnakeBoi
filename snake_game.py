@@ -54,7 +54,7 @@ class SnakeGame:
             self.__apples_handler.remove_apple(new_apple_pos[0], new_apple_pos[1])
 
         for wall in self.__walls_handler.get_walls():
-            if self.__round % 2 == 0:
+            if self.__round % 2 == 0 and self.__round != 0:
                 wall.move()
             (x, y) = wall.get_positions()[-1]
             if x < 0 or x >= self.width or y < 0 or y >= self.height:
@@ -68,7 +68,6 @@ class SnakeGame:
             for pos in wall.get_positions():
                 self.__apples_handler.remove_apple(pos[0], pos[1])
         
-
         self.__round += 1
 
         
