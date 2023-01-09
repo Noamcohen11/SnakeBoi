@@ -43,16 +43,24 @@ class Snake:
                 )
             )
 
+    def get_head_pos(self) -> tuple[int, int]:
+        """Get the position of the head of the snake.
+        :return: The position of the head of the snake."""
+        if self.positions != []:
+            return self.positions[0]
+        return None
+
     def move(self) -> None:
         """Move the snake one step in the current direction."""
         if self.positions == []:
             return
 
+        # If the snake is growing, add a new block to the snake.
         self.positions.pop()
         self.positions.insert(
             0,
             tuple(
-                self.positions[0][i] + MOVMENT_VECTOR[self.direction][i]
+                self.get_head_pos()[i] + MOVMENT_VECTOR[self.direction][i]
                 for i in range(BOARD_DIM)
             ),
         )
@@ -72,31 +80,26 @@ class Snake:
             return True
         return False
 
-    def get_head_pos(self) -> tuple[int, int]:
-        """Get the position of the head of the snake.
-        :return: The position of the head of the snake."""
-        if self.positions != []:
-            return self.positions[0]
-        return None
-
     def get_snake_pos(self) -> list[tuple[int, int]]:
         """Get the position of the snake.
         :return: The position of the snake."""
         return self.positions
-    
-    def get_size(self):
-        """Get the size of the snake."""
 
-        # Return the number of blocks in the snake without the growing blocks
-        # represented by (-1, -1)
-        return len(self.positions) - self.positions.count((-1, -1))
+    def get_size(self) -> int:
+        """Get the size of the snake
+        :return: The size of the snake."""
 
+        # Return the number of blocks in the snake.
+        return len(self.positions)
 
     def grow(self) -> None:
-        """Grow the snake by three block."""
-        self.positions.append((-1, -1))
-        self.positions.append((-1, -1))
-        self.positions.append((-1, -1))
+        """Grow the snake by the given size."""
+        self.positions.append(
+            tuple(
+                self.get_head_pos()[i] - MOVMENT_VECTOR[self.direction][i]
+                for i in range(BOARD_DIM)
+            ),
+        )
 
     def cut(self, pos: tuple[int, int]) -> None:
         """Cut the snake at the given position.

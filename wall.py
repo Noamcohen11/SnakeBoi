@@ -14,6 +14,7 @@ class Wall:
     """
     A class representing a wall that can be drawn on the screen.
     """
+
     def __init__(
         self, size: int, direction: str, mid_pos: tuple[int, int], color: str
     ) -> None:
@@ -44,7 +45,7 @@ class Wall:
     def get_positions(self) -> list[tuple[int, int]]:
         """Return the positions of the wall."""
         return self.positions
-    
+
     def get_middle_position(self) -> tuple[int, int]:
         """Return the middle position of the wall."""
         return self.positions[len(self.positions) // 2]
@@ -52,7 +53,7 @@ class Wall:
     def get_color(self) -> str:
         """Return the color of the wall."""
         return self.color
-    
+
     def move(self):
         """Move the wall one step in the current direction."""
         if self.positions == []:
@@ -69,30 +70,29 @@ class Wall:
 
 
 class WallsHandler:
-    WALL_SIZE = 3
-
-    def __init__(self, number_of_walls: int = 0) -> None:
+    def __init__(self, number_of_walls: int = 0, wall_size: int = 3) -> None:
         """Initialize the walls handler."""
         self.__walls = []
         self.__num_walls = number_of_walls
-    
-    def add_wall(self)-> tuple[int, int]:
+        self.__wall_size = wall_size
+
+    def add_wall(self) -> tuple[int, int]:
         """
         Adds a wall to the game.
         :return: the coordinates of the wall
         """
         if len(self.__walls) == self.__num_walls:
             return None
-        
+
         from game_utils import get_random_wall_data
 
-        (x, y, direction) = get_random_wall_data()            
+        (x, y, direction) = get_random_wall_data()
 
         wall_positions = [wall.get_positions()[1] for wall in self.__walls]
         if (x, y) in wall_positions:
             return None
-        
-        self.__walls.append(Wall(self.WALL_SIZE, direction, (x, y), "blue"))
+
+        self.__walls.append(Wall(self.__wall_size, direction, (x, y), "blue"))
         return (x, y)
 
     def remove_wall(self, x: int, y: int) -> None:
@@ -101,11 +101,8 @@ class WallsHandler:
             if wall.get_positions()[-1] == (x, y):
                 self.__walls.remove(wall)
                 break
-    
+
     def get_walls(self) -> list[Wall]:
         """Return a list of all the walls in the game."""
         # wall_positions = [wall.get_positions()[1] for wall in self.__walls]
         return self.__walls
-
-        
-        
