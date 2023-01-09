@@ -93,20 +93,32 @@ class SnakeGame:
         :return: True if the game is over, False otherwise."""
 
         # Check if snake is out of bounds
-        for pos in self.__snake.get_snake_pos():
-            if (
-                pos[0] < 0
-                or pos[0] >= self.width
-                or pos[1] < 0
-                or pos[1] >= self.height
-            ):
-                return True
+        snake_head_pos = self.__snake.get_head_pos()
+        # for pos in self.__snake.get_snake_pos():
+        #     if (
+        #         pos[0] < 0
+        #         or pos[0] >= self.width
+        #         or pos[1] < 0
+        #         or pos[1] >= self.height
+        #     ):
+        #         return True
+        if (
+            snake_head_pos[0] < 0
+            or snake_head_pos[0] >= self.width
+            or snake_head_pos[1] < 0
+            or snake_head_pos[1] >= self.height
+        ):
+            return True
+
 
         # Check if snake is eating itself
-        set_snake_pos = set(self.__snake.get_snake_pos())
-        if len(set_snake_pos) != len(self.__snake.get_snake_pos()):
+        # set_snake_pos = set(self.__snake.get_snake_pos())
+        # if len(set_snake_pos) != len(self.__snake.get_snake_pos()):
+        #     return True
+        snake_positions = self.__snake.get_snake_pos()
+        if snake_positions.count(snake_head_pos) > 1:
             return True
-        
+
         #  Check of snake is eating a wall or if wall is eating snake
         for wall in self.__walls_handler.get_walls():
             for pos in wall.get_positions():
@@ -114,28 +126,5 @@ class SnakeGame:
                     return True
                 if pos in self.__snake.get_snake_pos():
                     self.__snake.cut(pos)
-
-        """Check if the game is over.
-        meaning the snake is out of bounds or eating itself.
-        :return: True if the game is over, False otherwise."""
-
-        # Check if snake is out of bounds
-        pos = self.__snake.get_head_pos()
-        # If the snake is in length 0, it is not out of bounds.
-        if pos is None:
-            return False
-
-        if (
-            pos[0] < 0
-            or pos[0] >= self.width
-            or pos[1] < 0
-            or pos[1] >= self.height
-        ):
-            return True
-
-        # Check if snake is eating itself
-        set_snake_pos = set(self.__snake.get_snake_pos())
-        if len(set_snake_pos) != len(self.__snake.get_snake_pos()):
-            return True
 
         return False

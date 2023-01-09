@@ -86,7 +86,9 @@ class Snake:
     
     def grow(self) -> None:
         """Grow the snake by one block."""
-        self.positions.append((0, 0))
+        self.positions.append((-1, -1))
+        self.positions.append((-1, -1))
+        self.positions.append((-1, -1))
 
     def cut(self, pos: tuple[int, int]) -> None:
         """Cut the snake at the given position.
