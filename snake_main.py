@@ -41,14 +41,16 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
         (args.width // 2, args.height // 2),
         SNAKE_COLOR,
     )
-    game = SnakeGame(args.width, args.height, snake, max_apples, max_walls)
+    game = SnakeGame(
+        args.width, args.height, snake, max_apples, max_walls, args.rounds
+    )
     gd.show_score(0)
     # DRAW BOARD
     game.draw_board(gd)
     # END OF ROUND 0
-    while not game.is_over() and (
-        game.get_round() <= args.rounds or args.rounds < 0
-    ):
+    gd.end_round()
+    # MAIN LOOP
+    while not game.is_over():
         # CHECK KEY CLICKS
         key_clicked = gd.get_key_clicked()
         game.read_key(key_clicked)

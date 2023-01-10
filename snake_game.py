@@ -28,6 +28,7 @@ class SnakeGame:
         snake: Snake,
         max_apples: int,
         max_walls: int,
+        max_rounds: int,
     ) -> None:
         """
         Initialize the snake game object.
@@ -36,15 +37,15 @@ class SnakeGame:
         """
         self.height = height
         self.width = width
+        self.max_rounds = max_rounds
         self.__snake = snake
         self.__key_clicked = None
         self.__snake_growth_needed = 0
-
         self.__apples_handler = ApplesHandler(max_apples)
         self.__walls_handler = WallsHandler(max_walls)
-
+        self.__spawn_itmes()
         self.__score = 0
-        self.__round = 0
+        self.__round = 1
 
     def read_key(self, key_clicked: Optional[str]) -> None:
         """Read the key that was clicked and change the direction of the snake.
@@ -52,9 +53,25 @@ class SnakeGame:
         self.__key_clicked = key_clicked
         self.__snake.change_direction(self.__key_clicked)
 
-    def get_round(self) -> int:
-        """Return the current round of the game."""
-        return self.__round
+    def __spawn_itmes(self) -> None:
+
+        # Spawn a new wall
+        self.__walls_handler.add_wall()
+        walls_coords = []
+        for wall in self.__walls_handler.get_walls():
+            walls_coords += wall.get_positions()
+            for pos in wall.get_positions():
+                self.__apples_handler.remove_apple(pos[0], pos[1])
+
+        # Spawn a new apple
+        new_apple_pos = self.__apples_handler.add_apple()
+        snake_coords = self.__snake.get_snake_pos()
+
+        # Check if new apple spawned in snake. If so, remove it.
+        if new_apple_pos in snake_coords + walls_coords:
+            self.__apples_handler.remove_apple(
+                new_apple_pos[0], new_apple_pos[1]
+            )
 
     def update_objects(self) -> None:
         """Update the snake in the game."""
@@ -82,6 +99,8 @@ class SnakeGame:
                 self.__snake_growth_needed += (
                     REWARD_GROWTH_FACTOR  # Increase snake growth
                 )
+        # Add new apples and walls if needed.
+        self.__spawn_itmes()
 
         ######################
         ### Wall Movement  ###
@@ -93,28 +112,6 @@ class SnakeGame:
             (x, y) = wall.get_positions()[-1]
             if x < 0 or x >= self.width or y < 0 or y >= self.height:
                 self.__walls_handler.remove_wall(x, y)
-
-        # Spawn a new wall
-        self.__walls_handler.add_wall()
-        for wall in self.__walls_handler.get_walls():
-            for pos in wall.get_positions():
-                self.__apples_handler.remove_apple(pos[0], pos[1])
-
-        ######################
-        ### Apple Movement ###
-        ######################
-
-        # Spawn a new apple
-        new_apple_pos = self.__apples_handler.add_apple()
-        snake_coords = self.__snake.get_snake_pos()
-        walls_coords = []
-        for wall in self.__walls_handler.get_walls():
-            walls_coords += wall.get_positions()
-        # Check if new apple spawned in snake. If so, remove it.
-        if new_apple_pos in snake_coords + walls_coords:
-            self.__apples_handler.remove_apple(
-                new_apple_pos[0], new_apple_pos[1]
-            )
 
     def draw_board(self, gd: GameDisplay) -> None:
         """Draw the snake on the game board.
@@ -183,6 +180,9 @@ class SnakeGame:
 
         # A snake cannot be a single block.
         if self.__snake.get_size() == 1:
+            return True
+
+        if self.__round > self.max_rounds:
             return True
 
         return False
