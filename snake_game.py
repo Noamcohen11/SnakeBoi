@@ -182,7 +182,7 @@ class SnakeGame:
         if self.__snake.get_size() == 1:
             return True
 
-        if self.__round > self.max_rounds:
+        if self.__round > self.max_rounds and not self.max_rounds < 0:
             return True
 
         return False
