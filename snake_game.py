@@ -99,19 +99,23 @@ class SnakeGame:
                 self.__snake_growth_needed += (
                     REWARD_GROWTH_FACTOR  # Increase snake growth
                 )
-        # Add new apples and walls if needed.
-        self.__spawn_itmes()
 
         ######################
         ### Wall Movement  ###
         ######################
-
         for wall in self.__walls_handler.get_walls():
             if self.__round % 2 == 0 and self.__round != 0:
                 wall.move()
             (x, y) = wall.get_positions()[-1]
             if x < 0 or x >= self.width or y < 0 or y >= self.height:
                 self.__walls_handler.remove_wall(x, y)
+
+        # Spawn new apples and walls if needed.
+        self.__spawn_itmes()
+
+        
+
+        
 
     def draw_board(self, gd: GameDisplay) -> None:
         """Draw the snake on the game board.
@@ -153,7 +157,7 @@ class SnakeGame:
         """Check if the game is over.
         meaning the snake is out of bounds or eating itself.
         :return: True if the game is over, False otherwise."""
-        if self.__round > self.max_rounds and not self.max_rounds < 0:
+        if self.__round == self.max_rounds and not self.max_rounds < 0:
             return True
 
         snake_head_pos = self.__snake.get_head_pos()
