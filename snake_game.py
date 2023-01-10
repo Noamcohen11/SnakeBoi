@@ -157,7 +157,7 @@ class SnakeGame:
         """Check if the game is over.
         meaning the snake is out of bounds or eating itself.
         :return: True if the game is over, False otherwise."""
-        if self.__round == self.max_rounds and not self.max_rounds < 0:
+        if self.__round > self.max_rounds and not self.max_rounds < 0:
             return True
 
         snake_head_pos = self.__snake.get_head_pos()
