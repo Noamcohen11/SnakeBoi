@@ -61,9 +61,10 @@ class SnakeGame:
                 # print("DEBBUG: Removing wall")
                 self.__walls_handler.remove_wall(x, y)
 
-        # Spawn a new wall
-        
+        # Spawn a new wall       
         self.__walls_handler.add_wall()
+
+        # Remove apples that are in walls
         for wall in self.__walls_handler.get_walls():
             for pos in wall.get_positions():
                 self.__apples_handler.remove_apple(pos[0], pos[1])
