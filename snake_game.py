@@ -100,15 +100,6 @@ class SnakeGame:
             for pos in wall.get_positions():
                 self.__apples_handler.remove_apple(pos[0], pos[1])
 
-        walls_coords = []
-        for wall in self.__walls_handler.get_walls():
-            walls_coords += wall.get_positions()
-            if (
-                not self.__snake.get_head_pos() in wall.get_positions()
-                and wall.get_head_pos() in self.__snake.get_snake_pos()
-            ):
-                self.__snake.cut(wall.get_head_pos())
-
         ######################
         ### Apple Movement ###
         ######################
@@ -116,7 +107,9 @@ class SnakeGame:
         # Spawn a new apple
         new_apple_pos = self.__apples_handler.add_apple()
         snake_coords = self.__snake.get_snake_pos()
-
+        walls_coords = []
+        for wall in self.__walls_handler.get_walls():
+            walls_coords += wall.get_positions()
         # Check if new apple spawned in snake. If so, remove it.
         if new_apple_pos in snake_coords + walls_coords:
             self.__apples_handler.remove_apple(
@@ -149,6 +142,14 @@ class SnakeGame:
         gd.show_score(self.__score)
 
     def end_round(self) -> None:
+        # Cut the snake if needed.
+        for wall in self.__walls_handler.get_walls():
+            if (
+                not self.__snake.get_head_pos() in wall.get_positions()
+                and wall.get_head_pos() in self.__snake.get_snake_pos()
+            ):
+                self.__snake.cut(wall.get_head_pos())
+
         self.__round += 1
 
     def is_over(self) -> bool:
