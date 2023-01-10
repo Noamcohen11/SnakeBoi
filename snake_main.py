@@ -28,7 +28,7 @@ WALL_SIZE = 3
 def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
 
     # INIT OBJECTS
-    snake_len = SNAKE_INIT_SIZE    
+    snake_len = SNAKE_INIT_SIZE
     max_apples = args.apples
     max_walls = args.walls
     # If we are in debug, use a dummy snake.
@@ -46,8 +46,9 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
     # DRAW BOARD
     game.draw_board(gd)
     # END OF ROUND 0
-    round = 0
-    while not (game.is_over() or round == args.rounds):
+    while not game.is_over() and (
+        game.get_round() <= args.rounds or args.rounds < 0
+    ):
         # CHECK KEY CLICKS
         key_clicked = gd.get_key_clicked()
         game.read_key(key_clicked)
@@ -58,7 +59,6 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
         # WAIT FOR NEXT ROUND:
         game.end_round()
         gd.end_round()
-        round += 1
 
 
 if __name__ == "__main__":

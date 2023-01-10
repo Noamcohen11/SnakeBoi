@@ -46,9 +46,9 @@ class Wall:
         """Return the positions of the wall."""
         return self.positions
 
-    def get_middle_position(self) -> tuple[int, int]:
+    def get_head_pos(self) -> tuple[int, int]:
         """Return the middle position of the wall."""
-        return self.positions[len(self.positions) // 2]
+        return self.positions[0]
 
     def get_color(self) -> str:
         """Return the color of the wall."""
@@ -104,5 +104,4 @@ class WallsHandler:
 
     def get_walls(self) -> list[Wall]:
         """Return a list of all the walls in the game."""
-        # wall_positions = [wall.get_positions()[1] for wall in self.__walls]
         return self.__walls
