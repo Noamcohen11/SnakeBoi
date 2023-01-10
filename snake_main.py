@@ -48,7 +48,7 @@ def main_loop(gd: GameDisplay, args: argparse.Namespace) -> None:
     # DRAW BOARD
     game.draw_board(gd)
     # END OF ROUND 0
-    # gd.end_round()
+    gd.end_round()
     # MAIN LOOP
     while not game.is_over():
         # CHECK KEY CLICKS
