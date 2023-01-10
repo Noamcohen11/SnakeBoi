@@ -60,14 +60,17 @@ class SnakeGame:
 
         self.__snake.move()
         # Check if snake ate an apple
-        (x, y) = self.__snake.get_head_pos()
-        if self.__apples_handler.remove_apple(x, y):
-            self.__score += int(
-                self.__snake.get_size() ** 0.5
-            )  # Increase score
-            self.__snake_growth_needed += (
-                REWARD_GROWTH_FACTOR  # Increase snake growth
-            )
+        head_pos = self.__snake.get_head_pos()
+        if head_pos is not None:
+            x, y = head_pos
+            if self.__apples_handler.remove_apple(x, y):
+                self.__score += int(
+                    self.__snake.get_size() ** 0.5
+                )  # Increase score
+                self.__snake_growth_needed += (
+                    REWARD_GROWTH_FACTOR  # Increase snake growth
+                )
+
         # Check if new apple spawned in snake. If so, remove it.
         snake_coords = self.__snake.get_snake_pos()
         new_apple_pos = self.__apples_handler.add_apple()
@@ -128,9 +131,12 @@ class SnakeGame:
         """Check if the game is over.
         meaning the snake is out of bounds or eating itself.
         :return: True if the game is over, False otherwise."""
+        snake_head_pos = self.__snake.get_head_pos()
+
+        if snake_head_pos == None:
+            return False
 
         # Check if snake is out of bounds
-        snake_head_pos = self.__snake.get_head_pos()
         if (
             snake_head_pos[0] < 0
             or snake_head_pos[0] >= self.width
@@ -140,9 +146,6 @@ class SnakeGame:
             return True
 
         # Check if snake is eating itself
-        # set_snake_pos = set(self.__snake.get_snake_pos())
-        # if len(set_snake_pos) != len(self.__snake.get_snake_pos()):
-        #     return True
         snake_positions = self.__snake.get_snake_pos()
         if snake_positions.count(snake_head_pos) > 1:
             return True
