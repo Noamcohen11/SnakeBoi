@@ -45,7 +45,7 @@ class SnakeGame:
         self.__walls_handler = WallsHandler(max_walls)
         self.__spawn_itmes()
         self.__score = 0
-        self.__round = 1
+        self.__round = 0
 
     def read_key(self, key_clicked: Optional[str]) -> None:
         """Read the key that was clicked and change the direction of the snake.

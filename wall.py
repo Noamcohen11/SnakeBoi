@@ -27,20 +27,33 @@ class Wall:
         self.color = color
         self.__direction = direction
         # Check if direction is valid.
-        if direction in VERTICAL_DIRECTIONS:
-            pos_f = lambda x, y, i: (x, y - (size - 1) // 2 + i)
-        elif direction in HORIZONTAL_DIRECTIONS:
-            pos_f = lambda x, y, i: (x - (size - 1) // 2 + i, y)
-        else:
-            raise ValueError(
-                "Invalid direction {} for snake.".format(direction)
-            )
+        # if direction in VERTICAL_DIRECTIONS:
+        #     pos_f = lambda x, y, i: (x, y - (size - 1) // 2 + i)
+        # elif direction == "Left":
+        #     pos_f = lambda x, y, i: (x - (size - 1) // 2 + i, y)
+        # elif direction == "Right":
+        #     pos_f = lambda x, y, i: (x + (size - 1) // 2 - i, y)
+        # else:
+        #     raise ValueError(
+        #         "Invalid direction {} for snake.".format(direction)
+        #     )
 
+        (head_x, head_y) = mid_pos
+        if direction == "Right":
+            pos_f = [(head_x - i, head_y) for i in range(-(size//2), size//2 + 1)]
+        elif direction == "Left":
+            pos_f = [(head_x + i, head_y) for i in range(-(size//2), size//2 + 1)]
+        elif direction == "Up":
+            pos_f = [(head_x, head_y - i) for i in range(-(size//2), size//2 + 1)]
+        elif direction == "Down":
+            pos_f = [(head_x, head_y + i) for i in range(-(size//2), size//2 + 1)]
+        
+        self.positions = pos_f
         # Add entire wall to positions.
-        x, y = mid_pos
-        self.positions = []
-        for block in range(size):
-            self.positions.append(pos_f(x, y, block))
+        # x, y = mid_pos
+        # self.positions = []
+        # for block in range(size):
+        #     self.positions.append(pos_f(x, y, block))
 
     def get_positions(self) -> list[tuple[int, int]]:
         """Return the positions of the wall."""
@@ -58,8 +71,7 @@ class Wall:
         """Move the wall one step in the current direction."""
         if self.positions == []:
             return
-
-        self.positions.pop()
+        self.positions.pop(-1)
         self.positions.insert(
             0,
             tuple(
@@ -67,6 +79,7 @@ class Wall:
                 for i in range(BOARD_DIM)
             ),
         )
+
 
 
 class WallsHandler:
