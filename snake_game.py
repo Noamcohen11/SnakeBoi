@@ -103,7 +103,7 @@ class SnakeGame:
         ######################
         ### Wall Movement  ###
         ######################
-        for wall in self.__walls_handler.get_walls():
+        for wall in self.__walls_handler.get_walls().copy():
             if self.__round % 2 == 0 and self.__round != 0:
                 wall.move()
             (x, y) = wall.get_positions()[-1]
